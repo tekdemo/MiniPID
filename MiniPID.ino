@@ -1,22 +1,56 @@
-#include "miniPID.h"
-#include "Arduino.h"
+#include <MiniPID.h>
 
 #define SETPOINTPIN 0
-#define FEEDBACKPIN 1
+#define FEEDBACKPIN A1
+#define GROUNDPIN A0
 #define OUTPUTPIN 10
 
-pid=miniPID(1,.1,.01);
-unsigned long int t;
+MiniPID pid(.1, 0.01, 0.00);
 
-void setup(){
-	t=0;
+void setup() {
+  Serial.begin(9600);
+  Serial.println("Configuring");
+
+  // put your setup code here, to run once:
+  pid.setOutputLimits(0,255);
+  //pid.setOutputFilter(0.01);
+  pid.setOutputRampRate(20);
+  
+  
+  pinMode(OUTPUTPIN,OUTPUT);
+  digitalWrite(OUTPUTPIN,LOW);
+  
+  pinMode(GROUNDPIN,OUTPUT);
+  digitalWrite(GROUNDPIN,LOW);
+
+  delay(1000);
+  Serial.println("All set! Starting loop");
+  //Serial.print("Initial Voltage: ");
+  //Serial.println(analogRead(FEEDBACKPIN);
 }
 
-void loop(){
-	double output=pid.getOutput(analogRead(FEEDBACKPIN),analogRead(SETPOINTPIN););
-	analogWrite(OUTPUTPIN,output);
+double fakesensor=0;
+void loop() {
 
-	//Wait until the next 50ms interval
-	while(millis()-t<50) delay(1);
-	t=millis();
+  double target=768;
+  fakesensor-=5;
+  double out=pid.getOutput(fakesensor,target);
+  fakesensor+=out;
+  Serial.println((int)fakesensor);
+  delay(200);
+/*
+  double target=768;
+  double feedback=analogRead(FEEDBACKPIN);
+  
+  int out=pid.getOutput(feedback,target);
+  
+  //analogWrite(OUTPUTPIN,out);
+  
+ 
+  Serial.print("F: ");
+  Serial.println((int)feedback);
+  Serial.print("\t\tO: ");
+  Serial.println((int)out);
+  delay(50);
+  //*/
 }

@@ -145,14 +145,14 @@ void MiniPID::setMaxIOutput(double maximum){
  * set to (-maximum).
  * @param output 
  */
-void MiniPID::setMaxOutput(double output){ setMaxOutput(-output,output);}
+void MiniPID::setOutputLimits(double output){ setOutputLimits(-output,output);}
 
 /**
  * Specify a	maximum output.
  * @param minimum possible output value
  * @param maximum possible output value
  */
-void MiniPID::setMaxOutput(double minimum,double maximum){
+void MiniPID::setOutputLimits(double minimum,double maximum){
 	if(maximum<minimum)return;
 	maxOutput=maximum;
 	minOutput=minimum;

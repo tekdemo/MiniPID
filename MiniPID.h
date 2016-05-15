@@ -12,8 +12,8 @@ public:
 	void setPID(double p, double i, double d);
 	void setPID(double p, double i, double d,double f);
 	void setMaxIOutput(double maximum);
-	void setMaxOutput(double output);
-	void setMaxOutput(double minimum,double maximum);
+	void setOutputLimits(double output);
+	void setOutputLimits(double minimum,double maximum);
 	void setDirection(bool reversed);
 	void setSetpoint(double setpoint);
 	void reset();
