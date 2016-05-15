@@ -23,5 +23,37 @@ public:
 	double getOutput();
 	double getOutput(double actual);
 	double getOutput(double actual, double setpoint);
+
+private:
+	double constrain(double value, double min, double max);
+	bool bounded(double value, double min, double max);
+	void checkSigns();
+	void init();
+
+	double P;
+	double I;
+	double D;
+	double F;
+
+	double maxIOutput;
+	double maxError;
+	double errorSum;
+
+	double maxOutput; 
+	double minOutput;
+
+	double setpoint;
+
+	double lastActual;
+
+	bool firstRun; //default true
+	bool reversed;	//default false
+
+	double outputRampRate;
+	double lastOutput;
+
+	double outputFilter;
+
+	double setpointRange;
 };
 #endif
