@@ -11,43 +11,36 @@
 
 #include "MiniPID.h"
 
-	//**********************************
-	//Constructor functions
-	//**********************************
+//**********************************
+//Constructor functions
+//**********************************
 MiniPID::MiniPID(double p, double i, double d){
 	init();
 	P=p; I=i; D=d;
-	}
+}
 MiniPID::MiniPID(double p, double i, double d, double f){
 	init();
 	P=p; I=i; D=d; F=f;
-	}
+}
 void MiniPID::init(){
-	double P=0;
-	double I=0;
-	double D=0;
-	double F=0;
+	P=0;
+	I=0;
+	D=0;
+	F=0;
 
-	double maxIOutput=0;
-	double maxError=0;
-	double errorSum=0;
-
-	double maxOutput=0; 
-	double minOutput=0;
-
-	double setpoint=0;
-
-	double lastActual=0;
-
-	bool firstRun=true;
-	bool reversed=false;
-
-	double outputRampRate=0;
-	double lastOutput=0;
-
-	double outputFilter=0;
-
-	double setpointRange=0;
+	maxIOutput=0;
+	maxError=0;
+	errorSum=0;
+	maxOutput=0; 
+	minOutput=0;
+	setpoint=0;
+	lastActual=0;
+	firstRun=true;
+	reversed=false;
+	outputRampRate=0;
+	lastOutput=0;
+	outputFilter=0;
+	setpointRange=0;
 }
 
 //**********************************
@@ -66,7 +59,7 @@ void MiniPID::init(){
 void MiniPID::setP(double p){
 	P=p;
 	checkSigns();
-	}
+}
 
 /**
  * Changes the I parameter <br>
@@ -94,10 +87,11 @@ void MiniPID::setI(double i){
 	 *
 	 */
 } 
+
 void MiniPID::setD(double d){
 	D=d;
 	checkSigns();
-	}
+}
 
 /**Configure the FeedForward parameter. <br>
  * this->is excellent for Velocity, rate, and other	continuous control modes where you can 
@@ -109,7 +103,7 @@ void MiniPID::setD(double d){
 void MiniPID::setF(double f){
 	F=f;
 	checkSigns();
-	}
+}
 
 /** Create a new PID object. 
  * @param p Proportional gain. Large if large difference between setpoint and target. 
@@ -141,14 +135,14 @@ void MiniPID::setMaxIOutput(double maximum){
 	}
 }
 
-/**Specify a	maximum output. If a single parameter is specified, the minimum is 
+/**Specify a maximum output. If a single parameter is specified, the minimum is 
  * set to (-maximum).
  * @param output 
  */
 void MiniPID::setOutputLimits(double output){ setOutputLimits(-output,output);}
 
 /**
- * Specify a	maximum output.
+ * Specify a maximum output.
  * @param minimum possible output value
  * @param maximum possible output value
  */
@@ -194,11 +188,11 @@ double MiniPID::getOutput(double actual, double setpoint){
 	double Doutput;
 	double Foutput;
 
-this->setpoint=setpoint;
+	this->setpoint=setpoint;
 
-//Ramp the setpoint used for calculations if user has opted to do so
+	//Ramp the setpoint used for calculations if user has opted to do so
 	if(setpointRange!=0){
-		setpoint=constrain(setpoint,actual-setpointRange,actual+setpointRange);
+		setpoint=clamp(setpoint,actual-setpointRange,actual+setpointRange);
 	}
 
 	//Do the simple parts of the calculations
@@ -233,11 +227,10 @@ this->setpoint=setpoint;
 	// 1. maxIoutput restricts the amount of output contributed by the Iterm.
 	// 2. prevent windup by not increasing errorSum if we're already running against our max Ioutput
 	// 3. prevent windup by not increasing errorSum if output is output=maxOutput	
- Ioutput=I*errorSum;
+	Ioutput=I*errorSum;
 	if(maxIOutput!=0){
-		Ioutput=constrain(Ioutput,-maxIOutput,maxIOutput); 
+		Ioutput=clamp(Ioutput,-maxIOutput,maxIOutput); 
 	}	
-
 
 	//And, finally, we can just add the terms up
 	output=Foutput + Poutput + Ioutput + Doutput;
@@ -254,32 +247,28 @@ this->setpoint=setpoint;
 		errorSum=error; 
 	}
 	else if(maxIOutput!=0){
-	errorSum=constrain(errorSum+error,-maxError,maxError);
-	// In addition to output limiting directly, we also want to prevent I term 
-	// buildup, so restrict the error directly
-}
-else{
-	errorSum+=error;
-}
+		errorSum=clamp(errorSum+error,-maxError,maxError);
+		// In addition to output limiting directly, we also want to prevent I term 
+		// buildup, so restrict the error directly
+	}
+	else{
+		errorSum+=error;
+	}
 
 	//Restrict output to our specified output and ramp limits
 	if(outputRampRate!=0){
-		output=constrain(output, lastOutput-outputRampRate,lastOutput+outputRampRate);
+		output=clamp(output, lastOutput-outputRampRate,lastOutput+outputRampRate);
 	}
 	if(minOutput!=maxOutput){ 
-		output=constrain(output, minOutput,maxOutput);
+		output=clamp(output, minOutput,maxOutput);
 		}
 	if(outputFilter!=0){
 		output=lastOutput*outputFilter+output*(1-outputFilter);
 	}
 
-	//Get a test printline 
-//		/System.out.printf("Final output %5.2f [ %5.2f, %5.2f , %5.2f	], eSum %.2f\n",output,Poutput, Ioutput, Doutput,errorSum );
-	//System.out.printf("%5.2f\t%5.2f\t%5.2f\t%5.2f\n",output,Poutput, Ioutput, Doutput );
-
 	lastOutput=output;
 	return output;
-	}
+}
 
 /**
  * Calculates the PID value using the last provided setpoint and actual valuess
@@ -292,7 +281,7 @@ double MiniPID::getOutput(){
 /**
  * 
  * @param actual
-	 * @return calculated output value for driving the actual to the target 
+ * @return calculated output value for driving the actual to the target 
  */
 double MiniPID::getOutput(double actual){
 	return getOutput(actual,setpoint);
@@ -331,7 +320,7 @@ void MiniPID::setSetpointRange(double range){
  */
 void MiniPID::setOutputFilter(double strength){
 	if(strength==0 || bounded(strength,0,1)){
-	outputFilter=strength;
+		outputFilter=strength;
 	}
 }
 
@@ -346,7 +335,7 @@ void MiniPID::setOutputFilter(double strength){
  * @param max minimum value in range
  * @return Value if it's within provided range, min or max otherwise 
  */
-double MiniPID::constrain(double value, double min, double max){
+double MiniPID::clamp(double value, double min, double max){
 	if(value > max){ return max;}
 	if(value < min){ return min;}
 	return value;

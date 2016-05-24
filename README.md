@@ -1,6 +1,7 @@
 # minPID
-
 This is a small, fully self contained PID class designed to help provide simple, efficient tuning, and simple integration wherever any level of PID control might be needed. 
+
+All code is contained in a single C++ class, and does't depend on any specific compiler or toolchain. However, example Arduino sketches are included.
 
 ## Design Goals
 - Provide all expected features of a quality PID loop. 
@@ -41,7 +42,7 @@ No need for lots of convoluted calculation functions, or asyncronous calculation
 ## Usage
 A bare bones PID system could look like this. 
 
-``` java
+``` cpp
 MiniPID pid=MiniPID(1,0,0);
 //set any other PID configuration options here. 
 
@@ -50,7 +51,7 @@ while(true){
   //set some sort of target value
   double output=pid.getOutput(sensor,target);
   //do something with the output
-  Timer.delay(50);  
+  delay(50);
 }
 ```
 That's it. No fuss, no muss. A few lines of code and some basic tuning, and your PID system is in place. 
@@ -98,7 +99,7 @@ Reverses the output. Use this if the controller attempts to go the wrong way dur
 #### `reset()`
 Resets the PID controller. This primarily clears the I and D terms clears the previous sensor state, and sets the target setpoint the the current position. 
 
-This is useful if the output system's state may have changed since the last time the PID system output was applied. This is generally the case when the output system is in a manual control mode (such as a joystick), or was disabled and may have been physically moved. 
+This is useful if the output system's state may have changed since the last time the PID system output was applied. This is generally the case when the output system is in a manual control mode (such as a joystick), or was disabled and may have been physically moved.
 
 #### `setOutputRampRate(double rate)`
 Set the maximum rate of change in a single calculation cycle. This is particularly useful for adding "inertial" to the system, preventing jerks during setpoint changes.

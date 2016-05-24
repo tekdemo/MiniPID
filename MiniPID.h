@@ -3,33 +3,32 @@
 
 class MiniPID{
 public:
-	MiniPID(double p, double i, double d);
-	MiniPID(double p, double i, double d, double f);
-	void setP(double p);
-	void setI(double i);
-	void setD(double d);
-	void setF(double f);
-	void setPID(double p, double i, double d);
-	void setPID(double p, double i, double d,double f);
-	void setMaxIOutput(double maximum);
-	void setOutputLimits(double output);
-	void setOutputLimits(double minimum,double maximum);
-	void setDirection(bool reversed);
-	void setSetpoint(double setpoint);
+	MiniPID(double, double, double);
+	MiniPID(double, double, double, double);
+	void setP(double);
+	void setI(double);
+	void setD(double);
+	void setF(double);
+	void setPID(double, double, double);
+	void setPID(double, double, double, double);
+	void setMaxIOutput(double);
+	void setOutputLimits(double);
+	void setOutputLimits(double,double);
+	void setDirection(bool);
+	void setSetpoint(double);
 	void reset();
-	void setOutputRampRate(double rate);
-	void setSetpointRange(double range);
-	void setOutputFilter(double strength);
+	void setOutputRampRate(double);
+	void setSetpointRange(double);
+	void setOutputFilter(double);
 	double getOutput();
-	double getOutput(double actual);
-	double getOutput(double actual, double setpoint);
+	double getOutput(double);
+	double getOutput(double, double);
 
 private:
-	double constrain(double value, double min, double max);
-	bool bounded(double value, double min, double max);
+	double clamp(double, double, double);
+	bool bounded(double, double, double);
 	void checkSigns();
 	void init();
-
 	double P;
 	double I;
 	double D;
@@ -46,8 +45,8 @@ private:
 
 	double lastActual;
 
-	bool firstRun; //default true
-	bool reversed;	//default false
+	bool firstRun;
+	bool reversed;
 
 	double outputRampRate;
 	double lastOutput;

@@ -1,0 +1,25 @@
+# Data Types      KEYWORD1
+MiniPID           KEYWORD2
+
+#Methods          KEYWORD2
+
+setP              KEYWORD2
+setI              KEYWORD2
+setD              KEYWORD2
+setF              KEYWORD2
+setPID            KEYWORD2
+setPID            KEYWORD2
+setMaxIOutput     KEYWORD2
+setOutputLimits   KEYWORD2
+setOutputLimits   KEYWORD2
+setDirection      KEYWORD2
+setSetpoint       KEYWORD2
+reset             KEYWORD2
+setOutputRampRate KEYWORD2
+setSetpointRange  KEYWORD2
+setOutputFilter   KEYWORD2
+getOutput         KEYWORD2
+getOutput         KEYWORD2
+getOutput         KEYWORD2
+
+#Constants        KEYWORD1
