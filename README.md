@@ -1,7 +1,7 @@
 # minPID
 This is a small, fully self contained PID class designed to help provide simple, efficient tuning, and simple integration wherever any level of PID control might be needed. 
 
-All code is contained in a single C++ class, and does't depend on any specific compiler or toolchain. However, example Arduino sketches are included.
+All code is contained in a single C++ class, and doesn't depend on any specific compiler or toolchain. However, example Arduino sketches are included.
 
 ## Design Goals
 - Provide all expected features of a quality PID loop. 
@@ -77,10 +77,10 @@ These create the basic PID, allowing for further configuration. Generally, you i
 
 Tuning PID systems is out of scope of this readme, but a good examples can be found all over the internet. 
 
-#### SetF(double F)
+#### `SetF(double F)`
 Feed-Forward is a 4th system variable that is very helpful on systems with a target velocity, or other systems where an on-target system results in continous motion. Feed forward is not helpful on positional control systems, or other systems where being on target results in halted (or small cyclic) motion.
 
-Conceptually, Feed-forward defines a "gest guess" as to what the system output should be for a given setpoint value. Feed forward does not consider what the system is _actually_ doing, and a system driven solely by feed-forward is actually an open-loop system. Mathematically, a system driven solely is equivilent to `output=setpoint*F`. 
+Conceptually, Feed-forward defines a "best guess" as to what the system output should be for a given setpoint value. Feed forward does not consider what the system is _actually_ doing, and a system driven solely by feed-forward is actually an open-loop system. Mathematically, a system driven solely is equivilent to `output=setpoint*F`. 
 
 For this class of systems, it's helpful to consider the F term the primary variable. Using F in this way will result in a shorter time-to-target since you don't wait for error buildup (to aquire the I term). It's also simpler to tune and more stable since you don't have large P and D terms. 
 
