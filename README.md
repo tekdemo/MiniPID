@@ -80,11 +80,11 @@ Tuning PID systems is out of scope of this readme, but a good examples can be fo
 #### `SetF(double F)`
 Feed-Forward is a 4th system variable that is very helpful on systems with a target velocity, or other systems where an on-target system results in continous motion. Feed forward is not helpful on positional control systems, or other systems where being on target results in halted (or small cyclic) motion.
 
-Conceptually, Feed-forward defines a "best guess" as to what the system output should be for a given setpoint value. Feed forward does not consider what the system is _actually_ doing, and a system driven solely by feed-forward is actually an open-loop system. Mathematically, a system driven solely is equivilent to `output=setpoint*F`. 
+Conceptually, Feed-forward defines a "best guess" as to what the system output should be for a given setpoint value. Feed forward does not consider what the system is _actually_ doing, and a system driven solely by feed-forward is actually an open-loop system. Mathematically, a feed-forward only system is equivilent to `output=setpoint*F`. 
 
-For this class of systems, it's helpful to consider the F term the primary variable. Using F in this way will result in a shorter time-to-target since you don't wait for error buildup (to aquire the I term). It's also simpler to tune and more stable since you don't have large P and D terms. 
+In most cases, the F term can be calculated very simply by running an output at full speed, and measuring your sensor rate. The F term is then `max_output_value/max_sensor_rate`.
 
-For tuning, F as the primary variable results in P, I, and D being used for minor corrections, with a much smaller system error. P and I will generally be sufficient, and can correct for non-linearities in the system such as such as drag, inertia, friction, and disturbances.
+For this class of systems, it's helpful to consider the F term the primary variable, and configured first. Using F in this way will result in a shorter time-to-target since you don't wait for error buildup (to aquire the I term). It's also simpler to tune and more stable since you don't have large P and D terms which will cause oscillation. The P, I, and D  values then will then add minor corrections, operating on a much smaller system error. In this setup, P and I will generally correct for non-linearities in the system such as such as drag, inertia, and friction. D is helpful for providing recovery on sudden loading of the system, or quickly switching to a new setpoint.
 
 #### `setOutputLimits(double minimum,double maximum)`
 #### `setOutputLimits(double output)`
